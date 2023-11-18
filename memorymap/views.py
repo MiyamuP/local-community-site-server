@@ -1,6 +1,6 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, get_list_or_404
 from .models import Event, Location
 
 from django.shortcuts import render#不明
@@ -106,17 +106,28 @@ class PrefectureListView(APIView):#都道府県に結びついた投稿をたく
     def get(self, request, prefecture_id):
         # print("articleid",article_id)
         
-        prefecture = get_object_or_404(Prefecture,prefecture_id=prefecture_id)
-        articles = Article.objects.filter(prefecture_id = prefecture)#都道府県
-        # articles = Article.objects.filter(prefecture_id=prefecture_id)
+        prefucture = get_object_or_404(Prefecture,prefecture_id=prefecture_id)
+        articles = get_list_or_404(Article,prefecture_id=prefecture_id)
+        articles = Article.objects.filter(prefecture_id = prefecture_id)#都道府県
+        # articles = Article.objects.filter(prefecture_id=prefecture)
+        print(prefucture)
 
-        serializer = ArticleSerializer(articles)
+        pre_serializer = PrefectureListSerializer(prefucture)
+        pre_data = pre_serializer.data
+
+        serializer = ArticleSerializer(articles, many=True)
         data = serializer.data
-        print("--------")
-        print(data)
 
-        # data["locations"] = [{
-        #     "title": art.title,
-            
-        # } for art in articles]
-        return Response(data)
+        # for i in data:
+        #     print(i)
+
+        d = [{
+            "text":ar["text"],
+            "title":ar["title"],
+            "create_time":ar["create_time"],
+            "prefecture_id":ar["prefecture_id"],
+            "author":ar["author"],
+            "prefecture_name":pre_data["prefecture_name"]
+        } for ar in data]
+        
+        return Response(d)

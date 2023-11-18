@@ -85,6 +85,7 @@ class Article(models.Model):
     create_time = models.DateTimeField( auto_now=False, auto_now_add=True) #DBにinsertされた時だけ日付変わる
     # comment_id = models.CharField( max_length = 256, null = True, blank = True) # コメントID
     prefecture_id = models.ForeignKey(Prefecture,on_delete=models.CASCADE)
+    # prefecture_id = models.CharField(max_length=50)
 
 
     # event = models.ForeignKey( Event, on_delete=models.CASCADE) # 外部キー(Eventと1対多)
