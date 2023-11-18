@@ -1,4 +1,3 @@
-#<<<<<<< HEAD
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
@@ -80,19 +79,21 @@ class GetCsrf(APIView):
 #         event = Event.objects.get(uuid = article_id)
 #         serializer.save(event=event)
 
-class ArticleCreateAPIView(CreateAPIView):#空のイベント作成
+class ArticleCreateAPIView(CreateAPIView):#空のaricle
     queryset = Article.objects.all()
     serializer_class = ArticleSerializer
 
 class ArticleView(APIView):#投稿詳細
-    def get(self, request, uuid):
-        event = get_object_or_404(Event, uuid=uuid)
-        locations = Location.objects.filter(event=event)
-        serializer = EventDSerializer(event)
+    def get(self, request, article_id):
+        print("articleid",article_id)
+        article = get_object_or_404(Article, article_id=article_id)
+        
+        # article = Article.objects.filter(article=article)
+        serializer = ArticleSerializer(article)
         data = serializer.data
-        data["locations"] = [{
-            "title": location.title,
-            "lat": location.lat,
-            "lon": location.lon
-        } for location in locations]
+
+        # data["locations"] = [{
+        #     "title": art.title,
+            
+        # } for art in article]
         return Response(data)
