@@ -57,6 +57,20 @@ class Location(models.Model):
     lat = models.FloatField(("")) # FloatFieldは2進数で小数を表す
     lon = models.FloatField(("")) # FloatFieldは2進数で小数を表す
 
+
+
+class Prefecture(models.Model):
+    # def img_path(self, filename): # Userと同じ
+    #     result = 'location/{}{}'.format(str(uuid.uuid4().hex), os.path.splitext(filename)[-1])
+    #     return result
+    # prefecture_id = models.
+
+    prefecture_id = models.CharField(max_length=50)
+    # municipality_id = models.UUIDField(default=uuid.uuid4, unique=True, db_index=True, primary_key=True)
+    prefecture_name = models.CharField( max_length = 127, null = True, blank = True)
+    # municipality_name = models.CharField( max_length = 127, null = True, blank = True)
+    
+
 class Article(models.Model):
     """Ruki
     """
@@ -70,6 +84,7 @@ class Article(models.Model):
     # likes
     create_time = models.DateTimeField( auto_now=False, auto_now_add=True) #DBにinsertされた時だけ日付変わる
     # comment_id = models.CharField( max_length = 256, null = True, blank = True) # コメントID
+    prefecture_id = models.ForeignKey(Prefecture,on_delete=models.CASCADE)
 
 
     # event = models.ForeignKey( Event, on_delete=models.CASCADE) # 外部キー(Eventと1対多)
@@ -81,17 +96,6 @@ class Article(models.Model):
     # lat = models.FloatField(("")) # FloatFieldは2進数で小数を表す
     # lon = models.FloatField(("")) # FloatFieldは2進数で小数を表す
 
-class Prefecture(models.Model):
-    # def img_path(self, filename): # Userと同じ
-    #     result = 'location/{}{}'.format(str(uuid.uuid4().hex), os.path.splitext(filename)[-1])
-    #     return result
-    # prefecture_id = models.
-
-    prefecture_id = models.IntegerField()
-    # municipality_id = models.UUIDField(default=uuid.uuid4, unique=True, db_index=True, primary_key=True)
-    prefecture_name = models.CharField( max_length = 127, null = True, blank = True)
-    # municipality_name = models.CharField( max_length = 127, null = True, blank = True)
-    articles = models.ForeignKey( Article, on_delete=models.CASCADE)
 
 
     # coordinate = 

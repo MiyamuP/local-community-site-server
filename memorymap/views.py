@@ -10,7 +10,7 @@ from .serializers import EventDSerializer#詳細
 from .serializers import EventCSerializer#空のイベントを作成
 from rest_framework.generics import RetrieveAPIView#投稿の詳細
 from rest_framework.generics import CreateAPIView#空のイベントを作成
-from .serializers import EventSerializer, UserSerializer, LocationSerializer, ArticleSerializer, ArticleListSerializer
+from .serializers import EventSerializer, UserSerializer, LocationSerializer, ArticleSerializer, PrefectureListSerializer
 from django.contrib.auth import authenticate, login#ruki
 from .models import Event, Location, User, Article, Prefecture
 from rest_framework import authentication, exceptions#ruki
@@ -100,20 +100,23 @@ class ArticleView(APIView):#投稿詳細
     
 class ArticleListCreateAPIView(CreateAPIView):#空のaricle
     queryset = Article.objects.all()
-    serializer_class = ArticleListSerializer
+    serializer_class = PrefectureListSerializer
 
-class ArticleListView(APIView):#投稿詳細
+class PrefectureListView(APIView):#都道府県に結びついた投稿をたくさん取得
     def get(self, request, prefecture_id):
         # print("articleid",article_id)
-        articles = get_object_or_404(Prefecture, prefecture_id=prefecture_id)
         
-        # article = Article.objects.filter(article=article)
-        serializer = ArticleListSerializer(articles)
-        data = serializer.data
-        # print(data)
+        prefecture = get_object_or_404(Prefecture,prefecture_id=prefecture_id)
+        articles = Article.objects.filter(prefecture_id = prefecture)#都道府県
+        # articles = Article.objects.filter(prefecture_id=prefecture_id)
 
-        data["locations"] = [{
-            "title": art.title,
+        serializer = ArticleSerializer(articles)
+        data = serializer.data
+        print("--------")
+        print(data)
+
+        # data["locations"] = [{
+        #     "title": art.title,
             
-        } for art in article]
+        # } for art in articles]
         return Response(data)

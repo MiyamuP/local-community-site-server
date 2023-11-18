@@ -38,7 +38,7 @@ class ArticleSerializer(serializers.ModelSerializer): # Location情報を取得
     class Meta:
         model = Article
         fields = '__all__'
-        read_only_fields = ('article_id', 'create_time')
+        # read_only_fields = ('article_id', 'create_time')
 
 class UserSerializer(serializers.Serializer):
     username = serializers.CharField(max_length=255)
@@ -48,7 +48,7 @@ class UserSerializer(serializers.Serializer):
         fields = ('username','password')
 
 
-class ArticleListSerializer(serializers.ModelSerializer): # Location情報を取得
+class PrefectureListSerializer(serializers.ModelSerializer): # article
     class Meta:
         model = Prefecture
         fields = '__all__'
