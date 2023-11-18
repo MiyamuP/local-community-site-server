@@ -1,7 +1,7 @@
 
 from rest_framework import serializers
 
-from .models import Event, Location, User, Article
+from .models import Event, Location, User, Article, Prefecture
 
 class EventLSerializer(serializers.ModelSerializer):#投稿詳細
     class Meta:
@@ -46,4 +46,10 @@ class UserSerializer(serializers.Serializer):
 
     class Meta:
         fields = ('username','password')
+
+
+class ArticleListSerializer(serializers.ModelSerializer): # Location情報を取得
+    class Meta:
+        model = Prefecture
+        fields = '__all__'
 

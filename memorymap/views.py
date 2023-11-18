@@ -10,9 +10,9 @@ from .serializers import EventDSerializer#詳細
 from .serializers import EventCSerializer#空のイベントを作成
 from rest_framework.generics import RetrieveAPIView#投稿の詳細
 from rest_framework.generics import CreateAPIView#空のイベントを作成
-from .serializers import EventSerializer, UserSerializer, LocationSerializer, ArticleSerializer
+from .serializers import EventSerializer, UserSerializer, LocationSerializer, ArticleSerializer, ArticleListSerializer
 from django.contrib.auth import authenticate, login#ruki
-from .models import Event, Location, User, Article
+from .models import Event, Location, User, Article, Prefecture
 from rest_framework import authentication, exceptions#ruki
 from django.middleware.csrf import get_token
 
@@ -96,4 +96,24 @@ class ArticleView(APIView):#投稿詳細
         #     "title": art.title,
             
         # } for art in article]
+        return Response(data)
+    
+class ArticleListCreateAPIView(CreateAPIView):#空のaricle
+    queryset = Article.objects.all()
+    serializer_class = ArticleListSerializer
+
+class ArticleListView(APIView):#投稿詳細
+    def get(self, request, prefecture_id):
+        # print("articleid",article_id)
+        articles = get_object_or_404(Prefecture, prefecture_id=prefecture_id)
+        
+        # article = Article.objects.filter(article=article)
+        serializer = ArticleListSerializer(articles)
+        data = serializer.data
+        # print(data)
+
+        data["locations"] = [{
+            "title": art.title,
+            
+        } for art in article]
         return Response(data)

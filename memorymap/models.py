@@ -80,3 +80,19 @@ class Article(models.Model):
 
     # lat = models.FloatField(("")) # FloatFieldは2進数で小数を表す
     # lon = models.FloatField(("")) # FloatFieldは2進数で小数を表す
+
+class Prefecture(models.Model):
+    # def img_path(self, filename): # Userと同じ
+    #     result = 'location/{}{}'.format(str(uuid.uuid4().hex), os.path.splitext(filename)[-1])
+    #     return result
+    # prefecture_id = models.
+
+    prefecture_id = models.IntegerField()
+    # municipality_id = models.UUIDField(default=uuid.uuid4, unique=True, db_index=True, primary_key=True)
+    prefecture_name = models.CharField( max_length = 127, null = True, blank = True)
+    # municipality_name = models.CharField( max_length = 127, null = True, blank = True)
+    articles = models.ForeignKey( Article, on_delete=models.CASCADE)
+
+
+    # coordinate = 
+    

@@ -3,7 +3,7 @@ from .views import EventLocationView#親と子
 from .views import EventListAPIView#10件
 
 from .views import EventCreateView#空のイベント
-from .views import LocationCreateAPIView,ArticleCreateAPIView,ArticleView
+from .views import LocationCreateAPIView,ArticleCreateAPIView,ArticleView, ArticleListView, ArticleListCreateAPIView
 
 from .views import GetCsrf,LoginView
 urlpatterns = [
@@ -17,5 +17,8 @@ urlpatterns = [
 
     path('article/', ArticleCreateAPIView.as_view()),#post
     path('article/<article_id>/', ArticleView.as_view(), name='article-view'),#詳細
+
+    path('articlelist/', ArticleListCreateAPIView.as_view()),#post
+    path('articlelist/<prefecture_id>/', ArticleListView.as_view(), name='article-list-view'),#詳細
 
 ]
