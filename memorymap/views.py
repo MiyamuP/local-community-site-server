@@ -1,7 +1,7 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404, get_list_or_404
-from .models import Event, Location
+from .models import Event, Location,Comment
 
 from django.shortcuts import render#不明
 from rest_framework.generics import ListAPIView#直近10件
@@ -10,7 +10,7 @@ from .serializers import EventDSerializer#詳細
 from .serializers import EventCSerializer#空のイベントを作成
 from rest_framework.generics import RetrieveAPIView#投稿の詳細
 from rest_framework.generics import CreateAPIView#空のイベントを作成
-from .serializers import EventSerializer, UserSerializer, LocationSerializer, ArticleSerializer, PrefectureListSerializer
+from .serializers import EventSerializer, UserSerializer, LocationSerializer, ArticleSerializer, PrefectureListSerializer,CommentSerializer
 from django.contrib.auth import authenticate, login#ruki
 from .models import Event, Location, User, Article, Prefecture
 from rest_framework import authentication, exceptions#ruki
@@ -127,6 +127,43 @@ class PrefectureListView(APIView):#都道府県に結びついた投稿をたく
             "prefecture_id":ar["prefecture_id"],
             "author":ar["author"],
             "prefecture_name":pre_data["prefecture_name"],
+            "article_id":ar["article_id"]
+        } for ar in data]
+        
+        return Response(d)
+    
+class ComentCreateAPIView(CreateAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+
+class CommentListView(APIView):#記事に結びついたコメントをすべて取得
+    def get(self, request, article_id):
+        # print("articleid",article_id)
+        
+        # prefecture = get_object_or_404(Prefecture,prefecture_id=prefecture_id)
+        article = get_object_or_404(Article,article_id=article_id)
+        # articles = get_list_or_404(Article,prefecture_id=prefecture_id)
+        comments = get_list_or_404(Comment,article_id=article_id)
+        # articles = Article.objects.filter(prefecture_id = prefecture_id)#都道府県
+        comments = Comment.objects.filter(article_id = article_id)#都道府県
+        
+
+        # pre_serializer = PrefectureListSerializer(comments)
+        # pre_data = pre_serializer.data
+
+        serializer = CommentSerializer(comments, many=True)
+        data = serializer.data
+
+        # for i in data:
+        #     print(i)
+
+        d = [{
+            "text":ar["text"],
+            
+            "create_time":ar["create_time"],
+            "comment_id":ar["comment_id"],
+            
+            "author_name":ar["author_name"],
             "article_id":ar["article_id"]
         } for ar in data]
         

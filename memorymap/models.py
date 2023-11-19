@@ -100,4 +100,10 @@ class Article(models.Model):
 
 
     # coordinate = 
+class Comment(models.Model):
+    comment_id = models.UUIDField(default=uuid.uuid4, unique=True, db_index=True, primary_key=True)
+    text = models.CharField( max_length = 256, null = True, blank = True) # テキスト
+    author_name = models.CharField( max_length = 256, null = True, blank = True) # テキスト
+    article_id = models.ForeignKey(Article,on_delete=models.CASCADE)
+    create_time = models.DateTimeField( auto_now=False, auto_now_add=True) #DBにinsertされた時だけ日付変わる
     

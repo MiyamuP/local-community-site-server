@@ -1,7 +1,7 @@
 
 from rest_framework import serializers
 
-from .models import Event, Location, User, Article, Prefecture
+from .models import Event, Location, User, Article, Prefecture,Comment
 
 class EventLSerializer(serializers.ModelSerializer):#投稿詳細
     class Meta:
@@ -52,4 +52,8 @@ class PrefectureListSerializer(serializers.ModelSerializer): # article
     class Meta:
         model = Prefecture
         fields = '__all__'
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields='__all__'
 
