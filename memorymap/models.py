@@ -108,4 +108,7 @@ class Comment(models.Model):
     author_name = models.CharField( max_length = 256, null = True, blank = True) # テキスト
     article_id = models.ForeignKey(Article,on_delete=models.CASCADE)
     create_time = models.DateTimeField( auto_now=False, auto_now_add=True) #DBにinsertされた時だけ日付変わる
+    parent_comment_id = models.CharField( max_length = 256, null = True, blank = True) # 
+#class CommentParent(models.Model):
+
     

@@ -143,28 +143,38 @@ class CommentListView(APIView):#記事に結びついたコメントをすべて
         # prefecture = get_object_or_404(Prefecture,prefecture_id=prefecture_id)
         article = get_object_or_404(Article,article_id=article_id)
         # articles = get_list_or_404(Article,prefecture_id=prefecture_id)
-        comments = get_list_or_404(Comment,article_id=article_id)
-        # articles = Article.objects.filter(prefecture_id = prefecture_id)#都道府県
+        comments = get_list_or_404(Comment,article_id=article_id)#確認
         comments = Comment.objects.filter(article_id = article_id)#都道府県
-        
-
+        parents_comments =  Comment.objects.filter(article_id = article_id,parent_comment_id = '')#
         # pre_serializer = PrefectureListSerializer(comments)
         # pre_data = pre_serializer.data
 
-        serializer = CommentSerializer(comments, many=True)
+        serializer = CommentSerializer(parents_comments, many=True)
         data = serializer.data
+        # child_comments = Comment.objects.filter(parent_comment_id = '')
+        child_comments = []
+        parents_comments = []#親コメントのみ
+        for i in comments:
+            if(i.parent_comment_id != ''):
+                child_comments.append(i.parent_comment_id)
+            else:
+                parents_comments.append(i)
+        print("-------")
+        print(list(child_comments))#親を持っているコメント
 
+        print(parents_comments)
         # for i in data:
         #     print(i)
-
+        
         d = [{
             "text":ar["text"],
             
             "create_time":ar["create_time"],
             "comment_id":ar["comment_id"],
-            
+            "parent_comment_id":ar["parent_comment_id"],
             "author_name":ar["author_name"],
-            "article_id":ar["article_id"]
+            "article_id":ar["article_id"],
+            "has_replay":ar['comment_id'] in child_comments
         } for ar in data]
         
         return Response(d)
@@ -196,3 +206,9 @@ class PrefectureListView(APIView):
         
         return Response(data)
 
+class CommentChildListView(APIView):#親コメントのidを送れば、子供コメントをすべて表示
+    def get(self, request,parent_id):
+        childs = Comment.objects.filter(parent_comment_id = parent_id)
+        serializer = CommentSerializer(childs, many=True)
+        data = serializer.data
+        return Response(data)
