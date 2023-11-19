@@ -15,18 +15,20 @@ JOIN Posts ON Users.UserID = Posts.UserID;
 
 
 import sqlite3
-
-
+#データベースの中身を見るときに使う
 dbname = 'db.sqlite3'
 conn = sqlite3.connect(dbname)
 cur= conn.cursor()
+
+
+
 sql = "SELECT * FROM memorymap_article;"
 cur.execute(sql)
-
-
-# print(list(cur))
 for c in cur:
     print(c)
+
+
+
 # データベースへのコネクションを閉じる。(必須)
 conn.close()
 
