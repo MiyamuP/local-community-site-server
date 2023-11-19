@@ -102,7 +102,7 @@ class ArticleListCreateAPIView(CreateAPIView):#空のaricle
     queryset = Article.objects.all()
     serializer_class = PrefectureListSerializer
 
-class PrefectureListView(APIView):#都道府県に結びついた投稿をたくさん取得
+class ArticleListView(APIView):#都道府県に結びついた投稿をたくさん取得
     def get(self, request, prefecture_id):
         # print("articleid",article_id)
         
@@ -168,3 +168,31 @@ class CommentListView(APIView):#記事に結びついたコメントをすべて
         } for ar in data]
         
         return Response(d)
+    
+class PrefectureListView(APIView):
+    def get(self, request):
+        # articles = Article.objects.filter(prefecture_id = prefecture_id)#都道府県
+        prefecture = Prefecture.objects.all()
+        
+
+        # pre_serializer = PrefectureListSerializer(comments)
+        # pre_data = pre_serializer.data
+
+        serializer = PrefectureListSerializer(prefecture, many=True)
+        data = serializer.data
+
+        # for i in data:
+        #     print(i)
+
+        # d = [{
+        #     "text":ar["text"],
+            
+        #     "create_time":ar["create_time"],
+        #     "comment_id":ar["comment_id"],
+            
+        #     "author_name":ar["author_name"],
+        #     "article_id":ar["article_id"]
+        # } for ar in data]
+        
+        return Response(data)
+

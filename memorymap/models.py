@@ -68,6 +68,8 @@ class Prefecture(models.Model):
     prefecture_id = models.CharField(max_length=50)
     # municipality_id = models.UUIDField(default=uuid.uuid4, unique=True, db_index=True, primary_key=True)
     prefecture_name = models.CharField( max_length = 127, null = True, blank = True)
+    lat = models.FloatField(null = True, blank= True)
+    lon = models.FloatField(null = True, blank= True)
     # municipality_name = models.CharField( max_length = 127, null = True, blank = True)
     
 
