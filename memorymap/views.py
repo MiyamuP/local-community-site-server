@@ -126,7 +126,8 @@ class PrefectureListView(APIView):#都道府県に結びついた投稿をたく
             "create_time":ar["create_time"],
             "prefecture_id":ar["prefecture_id"],
             "author":ar["author"],
-            "prefecture_name":pre_data["prefecture_name"]
+            "prefecture_name":pre_data["prefecture_name"],
+            "article_id":ar["article_id"]
         } for ar in data]
         
         return Response(d)
