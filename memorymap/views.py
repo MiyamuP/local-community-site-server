@@ -106,13 +106,12 @@ class PrefectureListView(APIView):#都道府県に結びついた投稿をたく
     def get(self, request, prefecture_id):
         # print("articleid",article_id)
         
-        prefucture = get_object_or_404(Prefecture,prefecture_id=prefecture_id)
+        prefecture = get_object_or_404(Prefecture,prefecture_id=prefecture_id)
         articles = get_list_or_404(Article,prefecture_id=prefecture_id)
         articles = Article.objects.filter(prefecture_id = prefecture_id)#都道府県
         # articles = Article.objects.filter(prefecture_id=prefecture)
-        print(prefucture)
 
-        pre_serializer = PrefectureListSerializer(prefucture)
+        pre_serializer = PrefectureListSerializer(prefecture)
         pre_data = pre_serializer.data
 
         serializer = ArticleSerializer(articles, many=True)
