@@ -22,7 +22,7 @@ cur= conn.cursor()
 
 
 
-sql = "SELECT * FROM memorymap_article;"
+sql = "SELECT * FROM memorymap_comment;"
 cur.execute(sql)
 for c in cur:
     print(c)

@@ -148,9 +148,10 @@ class CommentListView(APIView):#記事に結びついたコメントをすべて
         parents_comments =  Comment.objects.filter(article_id = article_id,parent_comment_id = '')#
         # pre_serializer = PrefectureListSerializer(comments)
         # pre_data = pre_serializer.data
-
+        before_serializer=CommentSerializer(comments, many=True)
         serializer = CommentSerializer(parents_comments, many=True)
         data = serializer.data
+        before_data = before_serializer.data
         # child_comments = Comment.objects.filter(parent_comment_id = '')
         child_comments = []
         parents_comments = []#親コメントのみ
@@ -177,7 +178,7 @@ class CommentListView(APIView):#記事に結びついたコメントをすべて
             "has_replay":ar['comment_id'] in child_comments
         } for ar in data]
         
-        return Response(d)
+        return Response(before_data)
     
 class PrefectureListView(APIView):
     def get(self, request):
